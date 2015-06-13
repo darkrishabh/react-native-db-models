@@ -8,7 +8,7 @@ var AsyncStorage = React.AsyncStorage;
 var reactNativeStore = {};
 var dbName = "db_store";
 
-var Model = function(tableName, databaseData) {
+var Model = function (tableName, databaseData) {
     this.tableName = tableName;
     this.databaseData = databaseData;
     this._where = null;
@@ -18,11 +18,11 @@ var Model = function(tableName, databaseData) {
 };
 
 
-reactNativeStore.createDataBase = function() {
+reactNativeStore.createDataBase = function () {
     var self = this;
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
 
-        AsyncStorage.setItem(dbName, JSON.stringify({}), function(err) {
+        AsyncStorage.setItem(dbName, JSON.stringify({}), function (err) {
             if (err) {
                 reject(err)
             } else {
@@ -34,17 +34,17 @@ reactNativeStore.createDataBase = function() {
 };
 
 
-reactNativeStore.saveTable = function(tableName, tableData) {
+reactNativeStore.saveTable = function (tableName, tableData) {
     var self = this;
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
 
-        self.getItem(dbName).then(function(databaseData) {
+        self.getItem(dbName).then(function (databaseData) {
             databaseData[tableName] = tableData || {
                 'totalrows': 0,
                 'autoinc': 1,
                 'rows': {}
             };
-            AsyncStorage.setItem(dbName, JSON.stringify(databaseData), function(err) {
+            AsyncStorage.setItem(dbName, JSON.stringify(databaseData), function (err) {
                 if (err) {
                     reject(err)
                 } else {
@@ -57,14 +57,14 @@ reactNativeStore.saveTable = function(tableName, tableData) {
 }
 
 
-reactNativeStore.table = function(tableName) {
+reactNativeStore.table = function (tableName) {
     var self = this;
-    return new Promise(function(resolve, reject) {
-        return self.getItem(dbName).then(function(databaseData) {
+    return new Promise(function (resolve, reject) {
+        return self.getItem(dbName).then(function (databaseData) {
 
             if (!databaseData)
-                self.createDataBase().then(function(databaseData) {
-                    self.saveTable(tableName).then(function() {
+                self.createDataBase().then(function (databaseData) {
+                    self.saveTable(tableName).then(function () {
                         var model = new Model(tableName, databaseData ? databaseData : {});
                         resolve(model);
                     })
@@ -72,7 +72,7 @@ reactNativeStore.table = function(tableName) {
             else {
 
                 if (!databaseData[tableName]) {
-                    self.saveTable(tableName).then(function(databaseData) {
+                    self.saveTable(tableName).then(function (databaseData) {
                         var model = new Model(tableName, databaseData ? databaseData : {});
                         resolve(model);
                     });
@@ -85,9 +85,9 @@ reactNativeStore.table = function(tableName) {
     });
 }
 
-reactNativeStore.getItem = function(key) {
-    return new Promise(function(resolve, reject) {
-        AsyncStorage.getItem(key, function(err, res) {
+reactNativeStore.getItem = function (key) {
+    return new Promise(function (resolve, reject) {
+        AsyncStorage.getItem(key, function (err, res) {
             if (err) {
                 reject(err);
             } else {
@@ -98,30 +98,30 @@ reactNativeStore.getItem = function(key) {
 };
 
 // where
-Model.prototype.where = function(data) {
+Model.prototype.where = function (data) {
     this._where = data || null;
     return this;
 }
 
 // limit
-Model.prototype.limit = function(data) {
+Model.prototype.limit = function (data) {
     this._limit = data || 100;
     return this;
 }
 
-Model.prototype.offset = function(data) {
+Model.prototype.offset = function (data) {
     this._offset = data || 0;
     return this;
 }
 
-Model.prototype.init = function(){
+Model.prototype.init = function () {
     this.where();
     this.limit();
     this.offset();
     return this;
 }
 
-Model.prototype.update = function(data, callback) {
+Model.prototype.update = function (data, callback) {
 
     var results = [];
     var rows = this.databaseData[this.tableName]["rows"];
@@ -150,12 +150,12 @@ Model.prototype.update = function(data, callback) {
                     this.databaseData[this.tableName]["rows"][row][i] = data[i];
                 }
 
-                reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function(data){
-                    if(callback){
+                reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function (data) {
+                    if (callback) {
                         callback(data)
                     }
-                }, function(err){
-                    if(callback){
+                }, function (err) {
+                    if (callback) {
                         callback(err)
                     }
                 });
@@ -172,7 +172,7 @@ Model.prototype.update = function(data, callback) {
 
 };
 
-Model.prototype.updateById = function(id, data, callback) {
+Model.prototype.updateById = function (id, data, callback) {
 
     this.where({
         _id: id
@@ -181,15 +181,16 @@ Model.prototype.updateById = function(id, data, callback) {
     return this.update(data, callback);
 }
 
-Model.prototype.remove = function(callback) {
+Model.prototype.remove = function (callback) {
 
     var results = [];
     var rows = this.databaseData[this.tableName]["rows"];
-    var promise = null;
+    var deleted_ids = [];
     var hasParams = false;
     if (this._where) {
         hasParams = true;
     }
+    var counter = 0;
     if (hasParams) {
         for (var row in rows) {
             var isMatch = true;
@@ -201,31 +202,52 @@ Model.prototype.remove = function(callback) {
                 }
             }
             if (isMatch) {
-                results.push(this.databaseData[this.tableName]["rows"][row]['_id'])
+                counter += 1;
+                deleted_ids.push(this.databaseData[this.tableName]["rows"][row]['_id']);
                 delete this.databaseData[this.tableName]["rows"][row];
                 this.databaseData[this.tableName]["totalrows"]--;
-                reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function(data){
-                    if(callback){
-                        callback(data)
-                    }
-                }, function(err){
-                    if(callback){
-                        callback(err)
-                    }
-                })
             }
 
         }
 
+    } else {
+        counter = 0;
+        for (var row in rows) {
+            counter += 1;
+            deleted_ids.push(this.databaseData[this.tableName]["rows"][row]['_id']);
+            delete this.databaseData[this.tableName]["rows"][row];
+            this.databaseData[this.tableName]["totalrows"]--;
+        }
     }
     this.init();
-    if (callback && results.length === 0) {
+
+    if (counter === deleted_ids.length && callback) {
+        reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function (data) {
+            if (callback) {
+                var return_data = {
+                    results: data,
+                    deleted_ids: deleted_ids
+                }
+                callback(return_data)
+            }
+        }, function (err) {
+            results.push(err)
+            if (callback) {
+                var return_data = {
+                    error: err,
+                    deleted_ids: deleted_ids
+                }
+                callback(return_data)
+            }
+        })
+    }
+    else if (callback && deleted_ids.length === 0) {
         callback(null)
     }
 
 };
 
-Model.prototype.removeById = function(id) {
+Model.prototype.removeById = function (id) {
 
     this.where({
         _id: id
@@ -234,18 +256,18 @@ Model.prototype.removeById = function(id) {
     return this.remove();
 }
 
-Model.prototype.add = function(data, callback) {
+Model.prototype.add = function (data, callback) {
     var autoinc = this.databaseData[this.tableName].autoinc;
     data._id = autoinc;
     this.databaseData[this.tableName].rows[autoinc] = data;
     this.databaseData[this.tableName].autoinc += 1;
     this.databaseData[this.tableName].totalrows += 1;
-    reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function(data){
-        if(callback){
+    reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function (data) {
+        if (callback) {
             callback(data)
         }
-    }, function(err){
-        if(callback){
+    }, function (err) {
+        if (callback) {
             callback(err)
         }
     });
@@ -253,14 +275,14 @@ Model.prototype.add = function(data, callback) {
     this.init();
 }
 
-Model.prototype.get = function(id) {
+Model.prototype.get = function (id) {
     this.where({
         _id: id
     });
     return this.find(1);
 }
 
-Model.prototype.find = function() {
+Model.prototype.find = function () {
 
     var results = [];
     var rows = this.databaseData[this.tableName]["rows"];
@@ -301,7 +323,6 @@ Model.prototype.find = function() {
 
 
 }
-
 
 
 module.exports = reactNativeStore;
