@@ -1,6 +1,6 @@
 {
   "name": "react-native-db-models",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Local DB Models for React Native Apps",
   "main": "index.js",
   "scripts": {
