@@ -1,6 +1,8 @@
-var ReactNativeStore = require('react-native-store');
+'use strict';
 
-var DB_Model = function(db){
+var ReactNativeStore = require('./asyncstore');
+var RNDBModel = {};
+RNDBModel.create_db = function(db){
     var me = this;
     me.db_name = db;
 
@@ -25,9 +27,9 @@ var DB_Model = function(db){
     me.add = function(data_to_add, callback){
         ReactNativeStore.table(me.db_name).then(function(collection){
             // Add Data
-            var id = collection.add(data_to_add, function(data){
+            collection.add(data_to_add, function(added_data){
                 if(callback){
-                    callback(data)
+                    callback(added_data)
                 }
             });
         });
@@ -35,13 +37,13 @@ var DB_Model = function(db){
 
     me.flush_db = function(callback){
         ReactNativeStore.table(me.db_name).then(function(collection){
-            collection.where({}).remove(function(d){
+            collection.where({}).remove(function(data_removed){
                 if(callback){
-                    callback(d);
+                    callback(data_removed);
                 }
             });
         });
     }
 };
 
-module.export = DB_Model;
+module.exports = RNDBModel;
