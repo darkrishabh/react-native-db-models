@@ -247,13 +247,13 @@ Model.prototype.remove = function (callback) {
 
 };
 
-Model.prototype.removeById = function (id) {
+Model.prototype.removeById = function (id, callback) {
 
     this.where({
         _id: id
     });
 
-    return this.remove();
+    return this.remove(callback);
 }
 
 Model.prototype.add = function (data, callback) {
@@ -264,7 +264,7 @@ Model.prototype.add = function (data, callback) {
     this.databaseData[this.tableName].totalrows += 1;
     reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function (data) {
         if (callback) {
-            callback(data)
+            callback(autoinc)
         }
     }, function (err) {
         if (callback) {
