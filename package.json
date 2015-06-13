@@ -26,5 +26,5 @@
   "homepage": "https://github.com/darkrishabh/react-native-db-models",
   "dependencies": {
     "promise-es6": "^0.1.0"
-  },
+  }
 }
