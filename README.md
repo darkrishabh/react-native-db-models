@@ -24,7 +24,6 @@ Will push the example of this soon
 
 ## Installation
 
-Not on NPM right now. Will upload soon and will be available as
 ```
 npm install react-native-db-models
 
