@@ -1,128 +1,71 @@
-# react-native-store
+# react-native-db-models
 
-**A simple database base on react-native AsyncStorage. **
+**A Local DB Models for React Native **
+Built on top of React Native Store Library. It fixes some problems that people might face in using the React Native Store.
+
+React Native DB Models fixes a lot of problems in handling the promise response from the React AsyncStorage and also provides models like you would usually use.
+
+It is in a very beginning stage, so it has following APIs
+
+```
+get  //get({key:value}, callback) - gets matching query tuple from the DB of that table
+
+get_all //get_all(callback) - gets all the data from the DB of that table
+
+add  //add(json_data, callback) - adds new data and return the newly added object in the callback
+
+flush_db //flush_db(callback) - flushes the complete table in the DB
+```
+
+Will push the example of this soon
 
 
 ===
 
 ## Installation
 
+Not on NPM right now. Will upload soon and will be available as
 ```
-npm install react-native-store
-
-```
-
-## Data Anatomy
+npm install react-native-db-models
 
 ```
-db_store
-   |---table_name
-         |---totalrows (variable)
-         |---autoinc (variable)
-         |---rows (array)
-         	   |--- _id (number)
-         	   |--- ....
-         
+
+## Usage
+create a DB file as per your choice and you need to create DB first before using it
+
+
 ```
-
-
-## Useage
-
+var RNDBModel = require('react-native-db-models')
+var DB = {
+    "app": new RNDBModel.create_db('app'), // sample DATABASE
+    "user": new RNDBModel.create_db('user') // sample DATABASE
+};
+```
 
 ### Add Data
 
 ```
-var ReactNativeStore = require('react-native-store');
+//require your DB.js to get access to your databases
+var DB = require('db.js')
+//DB.<TABLE_NAME>.add(...)
+DB.app.add({sample_key: "sample_data"}, function(added_data){
+	console.log(added_data)
+	
 
-ReactNativeStore.table("articles").then(function(articles){
-
-	// Add Data
-	var id = articles.add({
-         title: "Title",
-         content: "This is a article"
-    });
-    
-    console.log(id); //row id
-    
-});
+})
 
 ```
 
-### Remove Data
-
+### Flush Table Data
 ```
-var ReactNativeStore = require('react-native-store');
+//require your DB.js to get access to your databases
+var DB = require('db.js')
 
-ReactNativeStore.table("articles").then(function(articles){
-
-	// Remove Data By Id
-	var id = articles.removeById(1);
-    console.log(id); //row id
-    
-    // Remove Data
-	var ids = articles.where({
-		title:"Title"
-	).remove();
-    console.log(ids); //row ids
-    
-});
+//DB.<TABLE_NAME>.flush_db(...)
+DB.app.flush_db(function(cleared_data){
+	console.log(cleared_data)
+})
 
 ```
 
-### Update Data
-
-```
-var ReactNativeStore = require('react-native-store');
-
-ReactNativeStore.table("articles").then(function(articles){
-
-	// Update Data By Id
-	var data = {
-		title:: "Title1"
-	};
-	var id = articles.updateById(1,data);
-    console.log(id); //row id
-    
-    // Update Data
-	var ids = articles.where({
-		title:"Title"
-	).update(data);
-    console.log(ids); //row ids
-    
-});
-
-```
-
-
-### Find Data
-
-```
-var ReactNativeStore = require('react-native-store');
-
-ReactNativeStore.table("articles").then(function(articles){
-
-	// Get Data By Id
-	var article = articles.get(1);
-    console.log(article); //article data
-    
-    // Get Datas
-	var articles = articles.where({
-		title:"Title"
-	).find(data);
-    console.log(articles); //articles data
-    
-    // limit
-    var articles = articles.where({
-		title:"Title"
-	).limit(10).find(data);
-    console.log(articles); //articles data
-    
-    // offset
-    var articles = articles.where({
-		title:"Title"
-	).offset(10).find(data);
-    console.log(articles); //articles data
-    
-});
-
-```
+More coming soon ...
