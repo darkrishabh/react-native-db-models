@@ -3,9 +3,7 @@
 var React = require('react-native');
 var Promise = require('promise-es6').Promise;
 
-var {
-    AsyncStorage
-} = React;
+var AsyncStorage = React.AsyncStorage;
 
 var reactNativeStore = {};
 var dbName = "db_store";
@@ -20,7 +18,6 @@ var Model = function(tableName, databaseData) {
 };
 
 
-// 创建数据库
 reactNativeStore.createDataBase = function() {
     var self = this;
     return new Promise(function(resolve, reject) {
@@ -36,7 +33,7 @@ reactNativeStore.createDataBase = function() {
     });
 };
 
-// 保存数据表
+
 reactNativeStore.saveTable = function(tableName, tableData) {
     var self = this;
     return new Promise(function(resolve, reject) {
@@ -59,7 +56,7 @@ reactNativeStore.saveTable = function(tableName, tableData) {
     });
 }
 
-// 选择数据表
+
 reactNativeStore.table = function(tableName) {
     var self = this;
     return new Promise(function(resolve, reject) {
@@ -88,7 +85,6 @@ reactNativeStore.table = function(tableName) {
     });
 }
 
-// 获得AsyncStorage的值
 reactNativeStore.getItem = function(key) {
     return new Promise(function(resolve, reject) {
         AsyncStorage.getItem(key, function(err, res) {
@@ -113,7 +109,6 @@ Model.prototype.limit = function(data) {
     return this;
 }
 
-// offset
 Model.prototype.offset = function(data) {
     this._offset = data || 0;
     return this;
@@ -126,8 +121,7 @@ Model.prototype.init = function(){
     return this;
 }
 
-// 更新数据
-Model.prototype.update = function(data) {
+Model.prototype.update = function(data, callback) {
 
     var results = [];
     var rows = this.databaseData[this.tableName]["rows"];
@@ -156,7 +150,15 @@ Model.prototype.update = function(data) {
                     this.databaseData[this.tableName]["rows"][row][i] = data[i];
                 }
 
-                reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]);
+                reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function(data){
+                    if(callback){
+                        callback(data)
+                    }
+                }, function(err){
+                    if(callback){
+                        callback(err)
+                    }
+                });
             }
 
         }
@@ -170,57 +172,59 @@ Model.prototype.update = function(data) {
 
 };
 
-// 按ID更新
-Model.prototype.updateById = function(id, data) {
+Model.prototype.updateById = function(id, data, callback) {
 
     this.where({
         _id: id
     });
 
-    return this.update(data);
+    return this.update(data, callback);
 }
 
-// 删除数据
-Model.prototype.remove = function(id) {
+Model.prototype.remove = function(callback) {
 
     var results = [];
     var rows = this.databaseData[this.tableName]["rows"];
-
+    var promise = null;
     var hasParams = false;
     if (this._where) {
         hasParams = true;
     }
-
     if (hasParams) {
         for (var row in rows) {
-
             var isMatch = true;
 
             for (var key in this._where) {
+
                 if (rows[row][key] != this._where[key]) {
                     isMatch = false;
                 }
             }
-
             if (isMatch) {
                 results.push(this.databaseData[this.tableName]["rows"][row]['_id'])
                 delete this.databaseData[this.tableName]["rows"][row];
                 this.databaseData[this.tableName]["totalrows"]--;
-                reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]);
+                reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function(data){
+                    if(callback){
+                        callback(data)
+                    }
+                }, function(err){
+                    if(callback){
+                        callback(err)
+                    }
+                })
             }
 
         }
 
-        this.init();
-        return results;
-
-    } else {
-        return false;
+    }
+    this.init();
+    if (callback && results.length === 0) {
+        callback(null)
     }
 
 };
 
-// 按 ID 删除
 Model.prototype.removeById = function(id) {
 
     this.where({
@@ -230,20 +234,25 @@ Model.prototype.removeById = function(id) {
     return this.remove();
 }
 
-// 添加数据
-Model.prototype.add = function(data) {
+Model.prototype.add = function(data, callback) {
     var autoinc = this.databaseData[this.tableName].autoinc;
     data._id = autoinc;
     this.databaseData[this.tableName].rows[autoinc] = data;
     this.databaseData[this.tableName].autoinc += 1;
     this.databaseData[this.tableName].totalrows += 1;
-    reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]);
+    reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function(data){
+        if(callback){
+            callback(data)
+        }
+    }, function(err){
+        if(callback){
+            callback(err)
+        }
+    });
 
     this.init();
-    return autoinc;
 }
 
-// 取一条数据
 Model.prototype.get = function(id) {
     this.where({
         _id: id
@@ -251,7 +260,6 @@ Model.prototype.get = function(id) {
     return this.find(1);
 }
 
-// 取多条数据
 Model.prototype.find = function() {
 
     var results = [];
@@ -287,12 +295,11 @@ Model.prototype.find = function() {
     if (typeof(limit) == 'number') {
         return results.slice(this._offset, this._limit + this._offset);
     } else {
+        this.init();
         return results;
     }
 
 
-    this.init();
-    return results;
 }
 
 

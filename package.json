@@ -1,28 +1,33 @@
 {
-  "name": "react-native-store",
+  "name": "react-native-db-models",
   "version": "0.0.1",
-  "description": "A simple database base on react-native AsyncStorage.",
+  "description": "Local DB Models for React Native Apps",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/thewei/react-native-store.git"
+    "url": "https://github.com/darkrishabh/react-native-db-models.git"
   },
   "keywords": [
     "react-native",
     "AsyncStorage",
     "dataBase",
+    "local db",
+    "models",
     "ios"
   ],
-  "author": "thewei",
+  "author": "rmehan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thewei/react-native-store/issues"
+    "url": "https://github.com/darkrishabh/react-native-db-models/issues"
   },
-  "homepage": "https://github.com/thewei/react-native-store",
+  "homepage": "https://github.com/darkrishabh/react-native-db-models",
   "dependencies": {
     "promise-es6": "^0.1.0"
+  },
+  "devDependencies": {
+    "react-native": "^0.5.0"
   }
 }
