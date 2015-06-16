@@ -26,7 +26,7 @@ reactNativeStore.createDataBase = function () {
             if (err) {
                 reject(err)
             } else {
-                resolve({});
+                resolve();
             }
         });
 
@@ -63,8 +63,8 @@ reactNativeStore.table = function (tableName) {
         return self.getItem(dbName).then(function (databaseData) {
 
             if (!databaseData)
-                self.createDataBase().then(function (databaseData) {
-                    self.saveTable(tableName).then(function () {
+                self.createDataBase().then(function () {
+                    self.saveTable(tableName).then(function (databaseData) {
                         var model = new Model(tableName, databaseData ? databaseData : {});
                         resolve(model);
                     })
@@ -314,7 +314,7 @@ Model.prototype.find = function () {
         }
     }
 
-    if (typeof(limit) == 'number') {
+    if (typeof(this._limit) == 'number') {
         return results.slice(this._offset, this._limit + this._offset);
     } else {
         this.init();

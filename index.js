@@ -61,7 +61,7 @@ RNDBModel.create_db = function(db){
         });
     };
 
-    me.flush_db = function(callback){
+    me.erase_db = function(callback){
         ReactNativeStore.table(me.db_name).then(function(collection){
             collection.remove(function(data_removed){
                 if(callback){
