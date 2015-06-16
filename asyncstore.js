@@ -26,7 +26,7 @@ reactNativeStore.createDataBase = function () {
             if (err) {
                 reject(err)
             } else {
-                resolve(data);
+                resolve({});
             }
         });
 
