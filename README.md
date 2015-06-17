@@ -1,6 +1,7 @@
 ![React Native DB Models](http://i58.tinypic.com/2akiqee.png) React Native DB Models
 ===================
-![](https://travis-ci.org/darkrishabh/react-native-db-models.svg?branch=master)  [![npm version](https://badge.fury.io/js/react-native-db-models.svg)](http://badge.fury.io/js/react-native-db-models)
+![](https://travis-ci.org/darkrishabh/react-native-db-models.svg?branch=master) ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg) 
+![npm version](https://badge.fury.io/js/react-native-db-models.svg)](http://badge.fury.io/js/react-native-db-models)
 ----------
 
 
