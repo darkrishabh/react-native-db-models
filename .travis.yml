@@ -1,1 +1,10 @@
-language: "javascript"
+language: node_js
+node_js:
+- '0.10'
+sudo: false
+cache:
+  directories:
+  - docs/vendor/bundle
+  - node_modules
+before_install:
+  npm install -g
