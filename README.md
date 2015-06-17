@@ -1,5 +1,4 @@
-![React Native DB Models](http://i58.tinypic.com/2akiqee.png) React Native DB
- Models
+![React Native DB Models](http://i58.tinypic.com/2akiqee.png) React Native DB Models
 ===================
 ----------
 
