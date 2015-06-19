@@ -106,6 +106,53 @@ RNDBModel.create_db = function(db){
             });
         });
     }
+    /**
+     * @description Updates the Table with the query
+     * @param query_data
+     * @param replace_data
+     * @param callback
+     */
+    me.update = function(query_data, replace_data, callback){
+        ReactNativeStore.table(me.db_name).then(function(collection){
+            collection.where(query_data).update(replace_data, function(data){
+                if(callback){
+                    callback(data);
+                }
+            });
+        });
+    };
+
+    /**
+     * @description Updates the DB Object by ID
+     * @param id
+     * @param replace_data
+     * @param callback
+     */
+    me.update_id = function(id, replace_data, callback){
+        ReactNativeStore.table(me.db_name).then(function(collection){
+            collection.update_id(id, replace_data, function(data){
+                if(callback){
+                    callback(data);
+                }
+            });
+        });
+    };
+
+    /**
+     * @description Removed object by ID
+     * @param id
+     * @param callback
+     */
+    me.remove_id = function(id, callback){
+        ReactNativeStore.table(me.db_name).then(function(collection){
+            collection.removeById(id, function(data_removed){
+                if(callback){
+                    callback(data_removed);
+                }
+            });
+        });
+    };
+
 };
 
 module.exports = RNDBModel;

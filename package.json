@@ -1,6 +1,6 @@
 {
   "name": "react-native-db-models",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Local DB Models for React Native Apps",
   "main": "index.js",
   "scripts": {
@@ -11,11 +11,12 @@
     "url": "https://github.com/darkrishabh/react-native-db-models.git"
   },
   "keywords": [
-    "react-native",
+    "react native",
     "AsyncStorage",
-    "dataBase",
+    "database",
     "local db",
     "models",
+    "data store",
     "ios"
   ],
   "author": "rmehan",
@@ -25,10 +26,11 @@
   },
   "homepage": "https://github.com/darkrishabh/react-native-db-models",
   "dependencies": {
-    "promise-es6": "^0.1.0",
-    "react-native": "^0.5.0"
+    "promise-es6": "^0.1.0"
+
   },
   "devDependencies": {
+    "react-native": "^0.5.0",
     "jest": "^0.1.40",
     "jest-cli": "^0.4.13"
   }

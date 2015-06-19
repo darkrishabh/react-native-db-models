@@ -122,7 +122,7 @@ Model.prototype.init = function () {
 }
 
 Model.prototype.update = function (data, callback) {
-
+    var me = this;
     var results = [];
     var rows = this.databaseData[this.tableName]["rows"];
 
@@ -130,7 +130,6 @@ Model.prototype.update = function (data, callback) {
     if (this._where) {
         hasParams = true;
     }
-
     if (hasParams) {
         for (var row in rows) {
 
@@ -145,31 +144,28 @@ Model.prototype.update = function (data, callback) {
             if (isMatch) {
 
                 results.push(this.databaseData[this.tableName]["rows"][row]["_id"]);
-
                 for (var i in data) {
                     this.databaseData[this.tableName]["rows"][row][i] = data[i];
                 }
-
-                reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function (data) {
-                    if (callback) {
-                        callback(data)
-                    }
-                }, function (err) {
-                    if (callback) {
-                        callback(err)
-                    }
-                });
             }
 
         }
-
+        reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function (data) {
+            if (callback) {
+                callback(data)
+            }
+        }, function (err) {
+            if (callback) {
+                callback(err)
+            }
+        });
         this.init();
-        return results;
 
     } else {
-        return false;
+        if (callback) {
+            callback(null)
+        }
     }
-
 };
 
 Model.prototype.updateById = function (id, data, callback) {
