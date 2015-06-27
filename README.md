@@ -8,6 +8,7 @@ This wrapper is built on top of [React Native Store](https://github.com/thewei/r
 
 React Native DB Models fixes a lot of problems in react native store and also the DB class on top helps to provide more functionality and easy developing options.
 
+[![NPM](https://nodei.co/npm/react-native-db-models.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/react-native-db-models/)
 
 ----------
 Usage
