@@ -136,6 +136,34 @@ DB.users.add({first_name: "Rishabh", age: 25}, function(added_data){
 })
 ```
 
+
+----------
+**update**
+
+> **update(query_data, new_data, callback)**
+> query_data: The data to be matched. (eg. {name: "John Doe"})
+> new_data: The data to be updated. (eg. {age: 12})
+
+Example
+```
+DB.users.update({first_name: "Rishabh"}, {age: 25}, function(updated_table){
+	console.log(updated_table);
+})
+```
+
+----------
+**update_id**
+
+> **update_id(id, new_data, callback)**
+> id: The id of the data to be matched.
+> new_data: The data to be updated. (eg. {name: "Ken"})
+
+Example
+```
+DB.users.update_id(3, {name: "Ken", age: 12}, function(updated_table){
+	console.log(updated_table);
+})
+```
 ----------
 **erase_db**
 
