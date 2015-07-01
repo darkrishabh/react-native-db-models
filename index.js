@@ -19,7 +19,6 @@ RNDBModel.create_db = function(db){
             var results = collection.where(query_data).find();
             if(callback){
                 callback(results)
-                RNDBModel.DBEvents.emit("all")
             }
         });
     };
@@ -63,6 +62,7 @@ RNDBModel.create_db = function(db){
                 if(callback){
                     callback(added_data_id)
                 }
+                RNDBModel.DBEvents.emit("all")
             });
         });
     };
@@ -93,6 +93,7 @@ RNDBModel.create_db = function(db){
                 if(callback){
                     callback(data_removed);
                 }
+                RNDBModel.DBEvents.emit("all")
             });
         });
     };
@@ -107,6 +108,7 @@ RNDBModel.create_db = function(db){
                 if(callback){
                     callback(data_removed);
                 }
+                RNDBModel.DBEvents.emit("all")
             });
         });
     }
@@ -122,6 +124,7 @@ RNDBModel.create_db = function(db){
                 if(callback){
                     callback(data);
                 }
+                RNDBModel.DBEvents.emit("all")
             });
         });
     };
@@ -138,6 +141,7 @@ RNDBModel.create_db = function(db){
                 if(callback){
                     callback(data);
                 }
+                RNDBModel.DBEvents.emit("all")
             });
         });
     };
@@ -153,6 +157,7 @@ RNDBModel.create_db = function(db){
                 if(callback){
                     callback(data_removed);
                 }
+                RNDBModel.DBEvents.emit("all")
             });
         });
     };
