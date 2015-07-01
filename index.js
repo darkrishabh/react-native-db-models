@@ -1,7 +1,10 @@
 'use strict';
 
 var ReactNativeStore = require('./asyncstore');
+var Events = require('eventemitter3')
 var RNDBModel = {};
+RNDBModel.DBEvents = new Events()
+
 RNDBModel.create_db = function(db){
     var me = this;
     me.db_name = db;
@@ -16,6 +19,7 @@ RNDBModel.create_db = function(db){
             var results = collection.where(query_data).find();
             if(callback){
                 callback(results)
+                RNDBModel.DBEvents.emit("all")
             }
         });
     };
