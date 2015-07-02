@@ -10,6 +10,11 @@ React Native DB Models fixes a lot of problems in react native store and also th
 
 [![NPM](https://nodei.co/npm/react-native-db-models.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/react-native-db-models/)
 
+**New Feature added**
+DB Emitter added on all write operations to the models. Which helps you maintain a global storage and re-rendering capabilities for your app.
+
+Check the new documentation
+
 ----------
 Usage
 ======================
@@ -32,6 +37,9 @@ and require it in your code -
 ```
 var React = require('react-native');
 var DB = require('./db.js');
+// DB Emitter Initialized
+
+var DBEvents = require('react-native-db-models').DBEvents
 var {
     AppRegistry,
     StyleSheet,
@@ -39,6 +47,12 @@ var {
     View,
     Image
     } = React;
+    
+// Only "all" event emitter is available
+
+DBEvents.on("all", function(){
+	console.log("Database changed");
+})
 
 var App = React.createClass({
 	get_users: function(){
