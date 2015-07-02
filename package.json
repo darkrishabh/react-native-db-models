@@ -1,6 +1,6 @@
 {
   "name": "react-native-db-models",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Local DB Models for React Native Apps",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,9 @@
     "AsyncStorage",
     "database",
     "local db",
+    "DB Events",
+    "rerender",
+    "Emmit database operations"
     "models",
     "data store",
     "ios"
