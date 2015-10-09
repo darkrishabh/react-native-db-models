@@ -22,6 +22,7 @@ Usage
 The ideal way to use this library is to have a db.js in your applications somewhere. Which will be required.
 
 **DB.js**
+
 ```
 var RNDBModel = require('react-native-db-models')
 
@@ -47,7 +48,7 @@ var {
     View,
     Image
     } = React;
-    
+
 // Only "all" event emitter is available
 
 DBEvents.on("all", function(){
@@ -56,8 +57,10 @@ DBEvents.on("all", function(){
 
 var App = React.createClass({
 	get_users: function(){
-		DB.users.get_all(function(result){
-			console.log(result);
+		DB.users.get_all(function(err, result){
+			if(!err) {
+				console.log(result);
+			}
 		})
 	},
 	render: function(){
@@ -80,9 +83,12 @@ You can check all the returned data from the callback. The returned data is more
 > query_data: The data to be matched. (eg. {name: "John Doe"})
 
 Example
+
 ```
-DB.users.get({first_name: "Rishabh"}, function(results){
-	console.log(results);
+DB.users.get({first_name: "Rishabh"}, function(err, results){
+	if(!err) {
+		console.log(results);
+	}
 })
 ```
 ----------
@@ -92,9 +98,12 @@ DB.users.get({first_name: "Rishabh"}, function(results){
 > id: ID of the object to be fetched.
 
 Example
+
 ```
-DB.users.get_id(10, function(results){
-	console.log(results);
+DB.users.get_id(10, function(err, results){
+	if(!err) {
+		console.log(results);
+	}
 })
 ```
 
@@ -107,9 +116,11 @@ DB.users.get_id(10, function(results){
 Example
 
 ```
-DB.users.get_all(function(result){
-			console.log(result);
-		})
+DB.users.get_all(function(err, result){
+	if(!err) {
+		console.log(results);
+	}
+})
 ```
 
 ----------
@@ -119,9 +130,12 @@ DB.users.get_all(function(result){
 > query_data: The data to be matched. (eg. {name: "John Doe"})
 
 Example
+
 ```
-DB.users.remove({first_name: "Rishabh"}, function(removed_data){
-	console.log(removed_data);
+DB.users.remove({first_name: "Rishabh"}, function(err, removed_data){
+	if(!err) {
+		console.log(results);
+	}
 })
 ```
 
@@ -132,9 +146,12 @@ DB.users.remove({first_name: "Rishabh"}, function(removed_data){
 > id: ID of the object to be deleted.
 
 Example
+
 ```
-DB.users.remove({first_name: "Rishabh"}, function(removed_data){
-	console.log(removed_data);
+DB.users.remove({first_name: "Rishabh"}, function(err, removed_data){
+	if(!err) {
+		console.log(results);
+	}
 })
 ```
 ----------
@@ -144,9 +161,12 @@ DB.users.remove({first_name: "Rishabh"}, function(removed_data){
 > data: The data to be added. (eg. {name: "John Doe", age: 56})
 
 Example
+
 ```
-DB.users.add({first_name: "Rishabh", age: 25}, function(added_data){
-	console.log(added_data); 
+DB.users.add({first_name: "Rishabh", age: 25}, function(err, added_data){
+	if(!err) {
+		console.log(results);
+	}
 })
 ```
 
@@ -159,9 +179,12 @@ DB.users.add({first_name: "Rishabh", age: 25}, function(added_data){
 > new_data: The data to be updated. (eg. {age: 12})
 
 Example
+
 ```
-DB.users.update({first_name: "Rishabh"}, {age: 25}, function(updated_table){
-	console.log(updated_table);
+DB.users.update({first_name: "Rishabh"}, {age: 25}, function(err, updated_table){
+	if(!err) {
+		console.log(results);
+	}
 })
 ```
 
@@ -173,9 +196,12 @@ DB.users.update({first_name: "Rishabh"}, {age: 25}, function(updated_table){
 > new_data: The data to be updated. (eg. {name: "Ken"})
 
 Example
+
 ```
-DB.users.update_id(3, {name: "Ken", age: 12}, function(updated_table){
-	console.log(updated_table);
+DB.users.update_id(3, {name: "Ken", age: 12}, function(err, updated_table){
+	if(!err) {
+		console.log(results);
+	}
 })
 ```
 ----------
@@ -185,14 +211,16 @@ DB.users.update_id(3, {name: "Ken", age: 12}, function(updated_table){
 > Erases the complete table.
 
 Example
+
 ```
-DB.users.erase_db(function(removed_data){
-	console.log(removed_data);
+DB.users.erase_db(function(err, removed_data){
+	if(!err) {
+		console.log(results);
+	}
 })
 ```
- 
- 
+
+
  *More methods and features are gonna be added soon. Such as update, replace, constraints*
 
 ----------
-
