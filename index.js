@@ -68,6 +68,29 @@ RNDBModel.create_db = function(db){
     };
 
     /**
+     * @description Adds array of data to the Table in the DB
+     * @param data_to_add
+     * @param callback
+     */
+    me.add_all = function(data_to_add, callback){
+        if(data_to_add.length <= 0) return null;
+        
+        var added_data = [];
+        
+        var addItem = function(data_to_add) {
+          if(data_to_add.length == 0 && callback) { return callback(added_data); }
+          var data = data_to_add.pop();
+
+          me.add(data, function(data_added){
+            addItem(data_to_add);
+            added_data.push(data_added);
+          });
+        };
+
+        addItem(data_to_add);
+    };
+
+    /**
      * @description Removes all the objects matching the query
      * @param query_data
      * @param callback
