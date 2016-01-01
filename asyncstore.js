@@ -271,6 +271,30 @@ Model.prototype.add = function (data, callback) {
     this.init();
 }
 
+Model.prototype.multiAdd = function (data, callback) {
+    var self = this;
+
+    data.forEach(function(value, index){
+        var autoinc = self.databaseData[self.tableName].autoinc;
+        value._id = autoinc + index;
+        self.databaseData[self.tableName].rows[autoinc] = value;
+        self.databaseData[self.tableName].autoinc += 1;
+        self.databaseData[self.tableName].totalrows += 1;
+    });
+
+    reactNativeStore.saveTable(this.tableName, this.databaseData[this.tableName]).then(function (added_data) {
+        if (callback) {
+            callback(data)
+        }
+    }, function (err) {
+        if (callback) {
+            callback(err)
+        }
+    });
+
+    this.init();
+}
+
 Model.prototype.get = function (id) {
     this.where({
         _id: id
