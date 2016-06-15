@@ -68,6 +68,25 @@ RNDBModel.create_db = function(db){
     };
 
     /**
+     * @description Adds array of data (objects) to the Table in the DB
+     * @param data_to_add
+     * @param callback
+     */
+    me.add_all = function(data_to_add, callback){
+        var self = this;
+
+        ReactNativeStore.table(me.db_name).then(function(collection){
+            // Add Data
+            collection.multiAdd(data_to_add, function(added_data){
+                if(callback){
+                    callback(added_data)
+                }
+                RNDBModel.DBEvents.emit("all")
+            });
+        });
+    };
+
+    /**
      * @description Removes all the objects matching the query
      * @param query_data
      * @param callback
