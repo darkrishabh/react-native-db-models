@@ -138,6 +138,7 @@ Model.prototype.update = function (data, callback) {
             for (var key in this._where) {
                 if (rows[row][key] != this._where[key]) {
                     isMatch = false;
+                    break;
                 }
             }
 
@@ -195,6 +196,7 @@ Model.prototype.remove = function (callback) {
 
                 if (rows[row][key] != this._where[key]) {
                     isMatch = false;
+                    break;
                 }
             }
             if (isMatch) {
